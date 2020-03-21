@@ -4,6 +4,11 @@ session_start();
 
 if(isset($_SESSION['login'])) {
 
+include_once 'model/Conexao.class.php';
+include_once 'model/Contas.class.php';
+
+$contas = new Contas();
+
 ?>
 
 <!DOCTYPE html>
@@ -93,20 +98,21 @@ if(isset($_SESSION['login'])) {
 									</tr>
 								</thead>
 								<tbody>
-									
+									<?php foreach ($contas->listAccounts() as $account): ?>
 									<tr class="tr">
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
+										<td><?php echo $account['id']; ?></td>
+										<td><?php echo $account['titular']; ?></td>
+										<td><?php echo $account['agencia']; ?></td>
+										<td><?php echo $account['conta']; ?></td>
+										<td><?php echo $account['saldo']; ?></td>
 
 										<!-- Formulario para Transação -->
 										<td>
 
-						<form method="POST" action="">
+						<form method="POST" action="view/add_transacao.php">
 
 							<!-- Botão para Transação -->
+							<input type="hidden" name="id" value="<?=$account['id']?>">
 
 							<button class="btn btn-warning btn-xs">
 								<i class="fa fa-dollar-sign"></i>

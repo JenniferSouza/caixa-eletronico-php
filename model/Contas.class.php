@@ -1,6 +1,30 @@
 <?php
 
 class Contas extends Conexao {
+// Método para listar contas
+	public function listAccounts() {
+		$pdo = parent::get_instance();
+		$sql = "SELECT * FROM contas ORDER BY id ASC";
+		$sql = $pdo->prepare($sql);
+		$sql->execute();
+
+		if($sql->rowCount () > 0) {
+			return $sql->fetchAll();
+		}
+	}
+		// Método para pegar informações de cada conta
+	public function getInfo($id) {
+		$pdo = parent::get_instance();
+		$sql = "SELECT * FROM contas WHERE id = :id";
+		$sql = $pdo->prepare($sql);
+		$sql->bindValue(":id", $id);
+		$sql->execute();
+
+		if($sql->rowCount () > 0) {
+			return $sql->fetchAll();
+		}
+	}
+
 
 		// Método para fazer login
 	public function setLogged($agencia, $conta, $senha) {
@@ -23,6 +47,11 @@ class Contas extends Conexao {
 
 		} else {
 			header("Location: ../login.php?not_login");
+		}
+
+//Método para fazer logout
+		public function logout() {
+			unset($_SESSION['login']);
 		}
 
 	}
